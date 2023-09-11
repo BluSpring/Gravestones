@@ -131,7 +131,8 @@ public class GravestoneBlock extends HorizontalFacingBlock implements BlockEntit
             retrievalInventory.addAll(gravestonesApi.getInventory(playerEntity));
         }
 
-        playerEntity.getInventory().clear();
+        // who the fuck thought this was a good idea?????
+        //playerEntity.getInventory().clear();
 
         if(GravestonesConfig.getConfig().mainSettings.dropType == GravestoneDropType.PUT_IN_INVENTORY) {
             List<ItemStack> armor = items.subList(36, 40);
