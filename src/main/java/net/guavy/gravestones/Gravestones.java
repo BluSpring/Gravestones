@@ -4,6 +4,7 @@ import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
@@ -12,6 +13,7 @@ import net.guavy.gravestones.api.GravestonesApi;
 import net.guavy.gravestones.block.GravestoneBlock;
 import net.guavy.gravestones.block.entity.GravestoneBlockEntity;
 import net.guavy.gravestones.compat.TrinketsCompat;
+import net.guavy.gravestones.config.GravestoneDropType;
 import net.guavy.gravestones.config.GravestoneRetrievalType;
 import net.guavy.gravestones.config.GravestonesConfig;
 import net.minecraft.block.Block;
@@ -20,11 +22,15 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.*;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroups;
+import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
@@ -69,6 +75,33 @@ public class Gravestones implements ModInitializer {
 			}
 			return true;
 		});
+
+		UseBlockCallback.EVENT.register(((player, world, hand, hitResult) -> {
+			if (!player.isSneaking())
+				return ActionResult.PASS;
+
+			var entity = world.getBlockEntity(hitResult.getBlockPos());
+			if(entity instanceof GravestoneBlockEntity gravestoneBlockEntity) {
+				if(player.hasPermissionLevel(GravestonesConfig.getConfig().mainSettings.minimumOpLevelToLoot) && gravestoneBlockEntity.getGraveOwner() != null && !gravestoneBlockEntity.getGraveOwner().getId().equals(player.getGameProfile().getId()))
+					return ActionResult.SUCCESS;
+
+				if(gravestoneBlockEntity.getGraveOwner() != null && GravestonesConfig.getConfig().mainSettings.retrievalType == GravestoneRetrievalType.ON_BREAK)
+					if(!gravestoneBlockEntity.getGraveOwner().getId().equals(player.getGameProfile().getId()) && !GravestonesConfig.getConfig().mainSettings.enableGraveLooting)
+						return ActionResult.SUCCESS;
+
+				var originalSetting = GravestonesConfig.getConfig().mainSettings.dropType;
+				GravestonesConfig.getConfig().mainSettings.dropType = GravestoneDropType.PUT_IN_INVENTORY;
+
+				var isFunctional = Gravestones.GRAVESTONE.RetrieveGrave(player, world, hitResult.getBlockPos());
+
+				GravestonesConfig.getConfig().mainSettings.dropType = originalSetting;
+
+				if (isFunctional) {
+					return ActionResult.SUCCESS;
+				}
+			}
+			return ActionResult.PASS;
+		}));
 	}
 
 	public static void placeGrave(World world, Vec3d pos, PlayerEntity player) {

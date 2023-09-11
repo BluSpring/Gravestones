@@ -1,12 +1,10 @@
 package net.guavy.gravestones.block.entity;
 
 import com.mojang.authlib.GameProfile;
-//import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.guavy.gravestones.Gravestones;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.inventory.Inventories;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
