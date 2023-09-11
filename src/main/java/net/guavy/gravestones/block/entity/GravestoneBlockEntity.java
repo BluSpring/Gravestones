@@ -1,12 +1,10 @@
 package net.guavy.gravestones.block.entity;
 
 import com.mojang.authlib.GameProfile;
-//import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.guavy.gravestones.Gravestones;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.inventory.Inventories;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
@@ -15,8 +13,7 @@ import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
-
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class GravestoneBlockEntity extends BlockEntity {
     // implements BlockEntityClientSerializable {
