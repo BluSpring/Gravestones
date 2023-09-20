@@ -16,6 +16,7 @@ import net.guavy.gravestones.compat.TrinketsCompat;
 import net.guavy.gravestones.config.GravestoneDropType;
 import net.guavy.gravestones.config.GravestoneRetrievalType;
 import net.guavy.gravestones.config.GravestonesConfig;
+import net.guavy.gravestones.util.ExperienceUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -137,7 +138,7 @@ public class Gravestones implements ModInitializer {
 				GravestoneBlockEntity gravestoneBlockEntity = new GravestoneBlockEntity(gravePos, graveState);
 				gravestoneBlockEntity.setItems(combinedInventory);
 				gravestoneBlockEntity.setGraveOwner(player.getGameProfile());
-				gravestoneBlockEntity.setXp(player.totalExperience);
+				gravestoneBlockEntity.setXp(ExperienceUtil.getPlayerExp(player));
 				world.addBlockEntity(gravestoneBlockEntity);
 
 				gravestoneBlockEntity.markDirty();
