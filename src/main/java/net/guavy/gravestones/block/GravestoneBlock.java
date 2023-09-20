@@ -131,10 +131,11 @@ public class GravestoneBlock extends HorizontalFacingBlock implements BlockEntit
             retrievalInventory.addAll(gravestonesApi.getInventory(playerEntity));
         }
 
-        // who the fuck thought this was a good idea?????
-        //playerEntity.getInventory().clear();
-
         if(GravestonesConfig.getConfig().mainSettings.dropType == GravestoneDropType.PUT_IN_INVENTORY) {
+            // i see why it's a good idea, but please,
+            // move it to the right place
+            playerEntity.getInventory().clear();
+
             List<ItemStack> armor = items.subList(36, 40);
 
             for (ItemStack itemStack : armor) {
