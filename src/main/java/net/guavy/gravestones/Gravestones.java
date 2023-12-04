@@ -91,7 +91,7 @@ public class Gravestones implements ModInitializer {
 						return ActionResult.SUCCESS;
 
 				var originalSetting = GravestonesConfig.getConfig().mainSettings.dropType;
-				GravestonesConfig.getConfig().mainSettings.dropType = GravestoneDropType.PUT_IN_INVENTORY;
+				GravestonesConfig.getConfig().mainSettings.dropType = originalSetting == GravestoneDropType.PUT_IN_INVENTORY ? GravestoneDropType.DROP_ITEMS : GravestoneDropType.PUT_IN_INVENTORY;
 
 				var isFunctional = Gravestones.GRAVESTONE.RetrieveGrave(player, world, hitResult.getBlockPos());
 
