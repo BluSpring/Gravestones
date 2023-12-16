@@ -43,7 +43,7 @@ import java.util.ArrayList;
 
 public class Gravestones implements ModInitializer {
 
-	public static final GravestoneBlock GRAVESTONE = new GravestoneBlock(FabricBlockSettings.copyOf(Blocks.COARSE_DIRT).strength(0.8f, -1f));
+	public static final GravestoneBlock GRAVESTONE = new GravestoneBlock(FabricBlockSettings.copyOf(Blocks.COARSE_DIRT).strength(0.8f, -1f).solid());
 	public static BlockEntityType<GravestoneBlockEntity> GRAVESTONE_BLOCK_ENTITY;
 
 	public static final ArrayList<GravestonesApi> apiMods = new ArrayList<>();
